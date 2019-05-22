@@ -2,7 +2,7 @@
     
     include_once 'config.php';
 
-    class Courses extends Connection{   
+    class Courses extends Connection{
         function fetchCourses(){
             $courses = array();
             $conn = Connection::connect();
@@ -14,6 +14,16 @@
                 array_push($courses,$course);
             }
             return $courses;
+        }
+        function getCourseDetails($id){
+            $details = array();
+            $conn = Connection::connect();
+            $sql = "select * from course where id = $id";
+            $res = $conn->query($sql);
+            while($row = $res->fetch_array()){
+                array_push($details,$row['id'],$row['name'],$row['eligiblity'],$row['description'],$row['duration'],$row['active'],$row['sylabus']);
+            }
+            return $details;
         }
         function endCourse($id){
             $conn = Connection::connect();

@@ -36,7 +36,7 @@
         <a class="nav-link" href="../notification"><h3>Notificaitons</h3></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><h3>Students</h3></a>
+        <a class="nav-link" href="../student"><h3>Students</h3></a>
       </li>
     </ul>
 </nav>
@@ -65,7 +65,7 @@
                             $file_size =$_FILES['Filename1']['size'];
                             $file_tmp =$_FILES['Filename1']['tmp_name'];
                             $file_type=$_FILES['Filename1']['type'];
-                            $target = "server/images/gallery/";
+                            $target = "server/images/gallery/sections/";
                             $target = $target . basename( $_FILES['Filename1']['name']);
                             move_uploaded_file($_FILES['Filename1']['tmp_name'],$target);
                             $name = $_POST['Name'];
@@ -103,7 +103,7 @@
                             $file_size =$_FILES['Filename']['size'];
                             $file_tmp =$_FILES['Filename']['tmp_name'];
                             $file_type=$_FILES['Filename']['type'];
-                            $target = "server/images/gallery/";
+                            $target = "server/images/gallery/gallery/";
                             $target = $target . basename( $_FILES['Filename']['name']);
                             move_uploaded_file($_FILES['Filename']['tmp_name'],$target);
                             $name = $_POST['section'];
@@ -122,16 +122,18 @@
     <table>
         <tr>
             <?php
-                $sql = "select * from section";
-                $res = $conn->query($sql);
-                while($row = $res->fetch_array()){
+                $dirname = '../images/gallery/sections/';
+                $images1 = glob($dirname."*.jpg");
+                $i = 0;
+                print_r($images1);
+                foreach($images1 as $image1){
             ?>
                 <td>
                 <div class="card border-primary mb-3" style="max-width: 20rem;">
   <div class="card-header"><?php echo $row['name'];?></div>
   <div class="card-body">
-    <img src="<?php echo $row['path'];?>" width="75%">
-    <button type="button" class="btn btn-outline-danger" onclick="deleteSection(<?php echo $row['id'];?>)">Delete</button>
+    <img src="<?php echo $image1;?>" width="75%">
+    <button type="button" class="btn btn-outline-danger" onclick="deleteSection(<?php echo $image1;?>)">Delete</button>
   </div>
 </div>
                 </td>
@@ -143,10 +145,10 @@
     <table>
         <tr>
             <?php
-                $sql = "select * from gallery";
-                $res = $conn->query($sql);
+                $dirname = '../images/gallery/gallery/';
+                $images = glob($dirname."*.jpg");
                 $i = 0;
-                while($row = $res->fetch_array()){
+                foreach($images as $image){
                     if($i == 6){
                         echo "</td></tr><br><tr></td>";
                     }else{
@@ -155,12 +157,13 @@
                 <div class="card border-primary mb-3" style="max-width: 20rem;">
                 <div class="card-header"><?php echo $row['section'];?></div>
                 <div class="card-body">
-                    <img src="<?php echo $row['path'];?>" width="75%">
-                <button type="button" class="btn btn-outline-danger" onclick="deleteGallery(<?php echo $row['id'];?>)">Delete</button>
+                    <img src="<?php echo $image;?>" width="75%">
+                <button type="button" class="btn btn-outline-danger" onclick="deleteGallery(<?php echo $image;?>)">Delete</button>
                 </div>
                 </div>
                 </td>
                 <?php 
+                $i++;
                     }
             } ?>
         </tr>

@@ -5,7 +5,7 @@
 ?>
 <html lang="en">
   <head>
-    <title>Ayucare</title>
+    <title>Ayucare | Institute</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -23,46 +23,127 @@
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="css/style.css">
- <style>
+    <style>
 
-      .scroll-bar-wrap {
-        width: 600px;
-        position: relative;
-        margin: 2em auto;
-      }
-      .scroll-box {
-        width: 100%;
-        height: 295px;
-        overflow-y: scroll;
-      }
-      .scroll-box::-webkit-scrollbar {
-        width: .4em; 
-      }
-      .scroll-box::-webkit-scrollbar,
-      .scroll-box::-webkit-scrollbar-thumb {
-        overflow:visible;
-        border-radius: 4px;
-      }
-      .scroll-box::-webkit-scrollbar-thumb {
-        background: rgba(0,0,0,.2); 
-      }
-      .cover-bar {
-        position: absolute;
-        background: #fff;;
-        height: 100%;  
-        top: 0;
-        right: 0;
-        width: .4em;
-        -webkit-transition: all .5s;
-        opacity: 1;
-      }
-      /* MAGIC HAPPENS HERE */
-      .scroll-bar-wrap:hover .cover-bar {
-         opacity: 0;
-        -webkit-transition: all .5s;
-      }
-</style>
-</head>
+.scroll-bar-wrap {
+  width: 600px;
+  position: relative;
+  margin: 2em auto;
+}
+.scroll-box {
+  width: 100%;
+  height: 295px;
+  overflow-y: scroll;
+}
+.scroll-box::-webkit-scrollbar {
+  width: .4em; 
+}
+.scroll-box::-webkit-scrollbar,
+.scroll-box::-webkit-scrollbar-thumb {
+  overflow:visible;
+  border-radius: 4px;
+}
+.scroll-box::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.2); 
+}
+.cover-bar {
+  position: absolute;
+  background: #fff;;
+  height: 100%;  
+  top: 0;
+  right: 0;
+  width: .4em;
+  -webkit-transition: all .5s;
+  opacity: 1;
+}
+
+.container1{
+	margin: 4% auto;
+	width: 210px;
+	height: 140px;
+	position: relative;
+	perspective: 1000px;
+}
+#carousel{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	transform-style: preserve-3d;
+	animation: rotation 20s infinite linear;
+}
+#carousel:hover{
+	animation-play-state: paused;
+}
+#carousel figure{
+	display: block;
+	position: absolute;
+	width: 186px;
+	height: 116px;
+	left: 10px;
+	top: 10px;
+	background: black;
+	overflow: hidden;
+	border: solid 5px black;
+}
+#carousel figure:nth-child(1){transform: rotateY(0deg) translateZ(288px);}
+#carousel figure:nth-child(2) { transform: rotateY(40deg) translateZ(288px);}
+#carousel figure:nth-child(3) { transform: rotateY(80deg) translateZ(288px);}
+#carousel figure:nth-child(4) { transform: rotateY(120deg) translateZ(288px);}
+#carousel figure:nth-child(5) { transform: rotateY(160deg) translateZ(288px);}
+#carousel figure:nth-child(6) { transform: rotateY(200deg) translateZ(288px);}
+#carousel figure:nth-child(7) { transform: rotateY(240deg) translateZ(288px);}
+#carousel figure:nth-child(8) { transform: rotateY(280deg) translateZ(288px);}
+#carousel figure:nth-child(9) { transform: rotateY(320deg) translateZ(288px);}
+
+.images{
+	-webkit-filter: grayscale(1);
+	cursor: pointer;
+	transition: all .5s ease;
+}
+.images:hover{
+	-webkit-filter: grayscale(0);
+  transform: scale(1.2,1.2);
+}
+
+@keyframes rotation{
+	from{
+		transform: rotateY(0deg);
+	}
+	to{
+		transform: rotateY(360deg);
+	}
+}
+/* MAGIC HAPPENS HERE */
+.scroll-bar-wrap:hover .cover-bar {
+   opacity: 0;
+  -webkit-transition: all .5s;
+}
+#marquee {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  line-height: 100px;
+  background-color: black;
+  color: white;
+  opacity: 0.6;
+}
+#marquee .marquee-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 100%;
+  width: auto;
+  white-space: nowrap !important;
+  z-index: 2;
+}
+
+    </style>
+  </head>
   <body data-spy="scroll" data-target=".navbar" data-offset="50">
     
     <header role="banner">
@@ -116,35 +197,66 @@
           </div>
         </div>
       </nav>
+<?php
+  $notification_obj = new Notification;
+  $notifications = $notification_obj->fetchNotification();
+?>
+<div id="marquee" style="margin-top:8%;">
+<?php foreach($notifications as $notification){ ?> 
+<div class="marquee-content"> <?php echo $notification; ?> </div>
+<?php } ?>
+</div>
     </header>
     <!-- END header -->
     
     <section class="home-slider owl-carousel">
-      <div class="slider-item" style="background-image: url('img/slider-1.jpg');height:80;">
+
+    <div class="slider-item" style="background-image: url('server/images/gallery/homeslider/banner-2.jpg');">
         <div class="container">
           <div class="row slider-text align-items-center">
             <div class="col-md-7 col-sm-12 element-animate">
-            <h1 style="color:black;font-size:88px;">AYUCARE</h1>
               </div>
           </div>
         </div>
         
       </div>
-      <div class="slider-item" style="background-image: url('img/slider-2.jpg');height:80%;">
-        
+    <?php 
+      $dirname = "server/images/gallery/homeslider/";
+      $images = glob($dirname."*.jpeg");
+      foreach($images as $image){
+    ?> 
+    <div class="slider-item" style="background-image: url('<?php echo $image;?>');height:80;">
         <div class="container">
           <div class="row slider-text align-items-center">
             <div class="col-md-7 col-sm-12 element-animate">
-             </div>
+              </div>
           </div>
         </div>
-
+        
       </div>
-
+      <?php } ?>
+    </section>
+    <section>
+  <div class="container1">
+		<div id="carousel">
+      
+      <?php
+        $rotor_dir = "server/images/gallery/rotator/";
+        $images1 = glob($rotor_dir."*.jpeg");
+        foreach($images1 as $image){
+          
+      ?>
+      <figure><img src="<?php echo $image;?>" class="images" alt=""></figure>
+      <?php }?>
+		</div>
+	</div>
+    </section>
+    <section>
+     
     </section>
     <!-- END slider -->
     <section class="section stretch-section">
-    <div class="row justify-content-center mb-5 element-animate">
+    <div class="row justify-content-center mb-5">
           <div class="col-md-8 text-center mb-5">
             <h2 class="text-uppercase heading border-bottom mb-4">Why Choose Us</h2>
             <p class="mb-0 lead">
@@ -160,80 +272,71 @@
           </div>
         </div>
 
-      <div class="container">
-      <table cellpadding="50px">
-        <tr>
-          <td>
-          <h2 class="text-uppercase heading border-bottom mb-4">Notices</h2>
-          <div class="scroll-bar-wrap">
-          <div class="scroll-box" style="width:100%;">
-          <p class="mb-0 lead">
-                <?php
-                    $notification_obj = new Notification;
-                    $notifications = $notification_obj->fetchNotification();
-                    foreach ($notifications as $notification){
-                      echo "<b><a style='color:red;' href='book.php'>".$notification. "</a></b><br>";
-                    }
-                ?>
-            </p>
+      <div class="container-fluid">
+          <div class="row">
+            <h2 class="text-uppercase heading border-bottom mb-4">Notices</h2>
+            <div class="col-md-4 col-sm-12 scroll-bar-wrap">
+              <div class="scroll-box" style="width:100%;">
+                <p class="mb-0 lead">
+                  <?php
+                      foreach ($notifications as $notification){
+                        echo "<b><a style='color:red;' href='book.php'>".$notification. "</a></b><br>";
+                      }
+                  ?>
+                </p>
 
+               </div>
+            </div>
+            <h2 class="text-uppercase heading border-bottom mb-4" >Introduction</h2>
+            <div class="scroll-bar-wrap">
+             <div class="scroll-box col-md-12 col-sm-12" style="width:100%;">
+                <p>Cosmetology procedures and
+                  Ayurvedic cosmetic products are making
+                  high impact for doctors in modern day
+                  practice Ayurveda is an ancient science
+                                    of medicine serving in cosmetic product
+                  making and procedures since decades
+                  Ayurvedic cosmetic products and procedures
+
+                  are very famous f exported Worldwide.
+                  ATCTs private unaided stand alone
+                  institute registered under GOI, offering
+                  skill enhancement training to qualified
+                  and registered medical practitioner. We
+                  Hake the opportunity to offer a comprehensive and detailed training in cosmetology,
+                  trichology and ayurvedic product making
+                  to produce brillant
+                  career beads clinical cosmetologists who
+                  have complete knowledge of the subject of
+                  command all the skills techniques
+                  procedures this
+
+                  ATCT preudes ayurveda product naklag
+                  training cosmetology training to dedors
+                  with full dedication. Based on product</p>
+                      <p>baking experience and large amount of
+                      patients through the att attached oPp
+                      We provide you proper hands-on training
+                      and as you throughout outcome
+                      ensures that you lean and complete
+                      each session with perfection and
+                      day of this unique cosmetology
+                      build your confidence with energy
+                      course
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          </div>
-          </td>
-          <td style="width:60%;">
-          <h2 class="text-uppercase heading border-bottom mb-4">Introduction</h2>
-          <div class="scroll-bar-wrap">
-  <div class="scroll-box" style="width:100%;">
-    <p>Cosmetology procedures and
-Ayurvedic cosmetic products are making
-high impact for doctors in modern day
-practice Ayurveda is an ancient science
-of medicine serving in cosmetic product
-making and procedures since decades
-Ayurvedic cosmetic products and procedures
-
-are very famous f exported Worldwide.
-ATCTs private unaided stand alone
-institute registered under GOI, offering
-skill enhancement training to qualified
-and registered medical practitioner. We
-Hake the opportunity to offer a comprehensive and detailed training in cosmetology,
-trichology and ayurvedic product making
-to produce brillant
-career beads clinical cosmetologists who
-have complete knowledge of the subject of
-command all the skills techniques
-procedures this
-
-ATCT preudes ayurveda product naklag
-training cosmetology training to dedors
-with full dedication. Based on product</p>
-    <p>baking experience and large amount of
-    patients through the att attached oPp
-    We provide you proper hands-on training
-    and as you throughout outcome
-    ensures that you lean and complete
-    each session with perfection and
-    day of this unique cosmetology
-    build your confidence with energy
-    course</p>
-  </div>
-  <div class="cover-bar"></div>
-</div>
-          </td>
-        </tr>
-      </table>
     <section class="section bg-light">
-      <div class="container" id="section1">
-        <div class="row justify-content-center mb-5 element-animate">
+    <div class="container" id="section1">
+        <div class="row justify-content-center mb-5 ">
           <div class="col-md-8 text-center mb-5">
           <h2 class="text-uppercase heading border-bottom mb-4">Our Courses</h2>
                       </div>
         </div>
-        
-        <div class="row element-animate">
-        
-          <div class="major-caousel js-carousel-2 owl-carousel">
+        <div class="container-fluid">
+        <div class="row">
             <?php
               $course_obj = new Courses;
               $courses = $course_obj->fetchCourses();
@@ -241,37 +344,26 @@ with full dedication. Based on product</p>
               foreach($courses as $course) {
                 if($course[5] == 1){
             ?>
-          <div>
+          <div class="col-md-4">
           <div class="media d-block media-custom text-left">
             <div class="media-body">
-              
               <h3 class="mt-0 text-black"><a href="#" class="text-black"><?php echo $courses[$i][1]?></a></h3>
               <p><?php echo $courses[$i][2]?></p>
               <span class="meta-post"><?php echo $courses[$i][4]?></span>
-              <p class="clearfix">
-                
-              <a onclick="getCourse(<?php echo $courses[$i][0]; ?>)" class="float-left">Read more</a>
-                
-                <!--number of student enrolled
-                  <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 14</a>-->
-              </p>
-              
+              <a href="course.php?id=<?php echo $courses[$i][0];?>" class="float-left">Read more</a>
             </div>
           </div>
-        </div>
+          </div>
               <?php 
                 }
               $i++; 
-            } ?>        
-          </div>
+            } ?>    
           <!-- END slider -->
         </div>
       </div>
       <?php
-    $conn = new mysqli("localhost","root","","ayucare");
-    if($conn->connect_error){
-        die("Connection Failed: ".$conn->connect_error);
-    }
+    $obj = new Connection;
+    $conn = $obj->connect();
     if(isset($_POST['submit'])){
         $FirstName = $_POST['FirstName'];
         $LastName = $_POST['LastName'];
@@ -282,14 +374,13 @@ with full dedication. Based on product</p>
         $state = $_POST['state'];
         $country = $_POST['country'];
         $address = $_POST['Address'];
-        
-        $sql = "insert into student (name,email,phone,gender,DOB, state, country,address) values ('$FirstName $LastName','$Email','$phone','$gender','$DOB','$state','$country','$address')";
+        $course = $_POST['course'];
+        $sql = "insert into student (name,email,phone,gender,DOB, state, country,address,course) values ('$FirstName $LastName','$Email','$phone','$gender','$DOB','$state','$country','$address','$course')";
         if($conn->query($sql) === TRUE){
         }else{
             echo "Error : ".$sql ."<br>".$conn->error;
         }
     }
-    $conn->close();
   ?>
       <a href="#" class="cta-link element-animate" style="background:#12e86b;" data-animate-effect="fadeIn" data-toggle="modal" data-target="#modalReg">
    <span class="sub-heading">click here for</span>
@@ -344,8 +435,31 @@ with full dedication. Based on product</p>
                             <label for="appointment_phone" class="text-black">Country</label>
                             <input type="text" class="form-control" id="country" name="country">
                           </div> 
+                          <?php 
+                             $course_obj = new Courses;
+                             $courses = $course_obj->fetchCourses();
+                           ?>                                               
+                      <div class="form-group">
+                      <label for="appointment_phone" class="text-black">Select Course</label>
+                           <select name="course" class="form-control">
+                            <?php
+                                foreach($courses as $course){
+                                  if($course[5] == 1){
+                             ?>
+                            <option name=" <?php echo $course[1]; ?>">
+                                    <?php echo $course[1]; ?>
+                            </option>
+                                <?php 
+                                  }
+                              } 
+                              
+                            ?>
+                           </select> 
+                           
+                          </div> 
                     <input type="submit" value="submit" class="btn btn-primary" name="submit" onclick="update()">
                   </div>
+                 
 </form>
           </div>
 </div>
@@ -364,8 +478,6 @@ with full dedication. Based on product</p>
           <div class="major-caousel js-carousel-1 owl-carousel">
               <?php 
 
-                $obj = new Connection;
-                $conn = $obj->connect();
                 $sql = "select * from faculty";
                 $res = $conn->query($sql);
                 while($row = $res->fetch_array()){
@@ -399,7 +511,6 @@ with full dedication. Based on product</p>
         <div class="row text-center justify-content-center">
           <div class="col-md-10">
             <h2 class="heading element-animate">Experience Our Advance Facilities</h2>
-            <p class="sub-heading element-animate mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
             <p class="element-animate"><a href="#" class="btn btn-primary btn-lg">Get In Touch</a></p>
           </div>
         </div>
@@ -416,7 +527,7 @@ with full dedication. Based on product</p>
 
  <footer class="site-footer" role="contentinfo">
    <div class="container" id="section5">
-     <div class="row mb-5 element-animate">
+     <div class="row mb-5 ">
        <div class="col-md-3 mb-5">
          <h3>Address</h3>
          <a> Plot No-19,Vidya Vihar, Wathoda Layout, Pandan Road, Nagpur. </a>
@@ -524,6 +635,51 @@ with full dedication. Based on product</p>
         xhttp.send();
       }
  }
+ (function() {
+  var content, contentWidth, jankMyShit, keyframes, marquee, style, totalWidth, width;
+
+  marquee = document.getElementById('marquee');
+
+  content = marquee.querySelector('.marquee-content');
+
+  width = marquee.clientWidth;
+
+  contentWidth = content.offsetWidth;
+
+  totalWidth = width + contentWidth;
+
+  keyframes = `@keyframes scroll-marquee {\n  0% {transform:translate3d(${totalWidth}px,0px,0px);}\n  100% {transform:translate3d(0px,0px,0px);}\n}`;
+
+  style = document.createElement('style');
+
+  style.id = 'scroll-marquee-style';
+
+  style.innerHTML = keyframes;
+
+  document.head.appendChild(style);
+
+  content.style.animation = "scroll-marquee 10s linear infinite";
+
+  // periodic interruption for {duration} ms
+  jankMyShit = function(interval, duration) {
+    var jank;
+    jank = function() {
+      var end, now, results;
+      now = Date.now();
+      end = now + duration;
+      results = [];
+      while (now < end) {
+        results.push(now = Date.now());
+      }
+      return results;
+    };
+    return setInterval(jank, duration);
+  };
+
+  jankMyShit(500, 250);
+
+}).call(this);
+
  </script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>

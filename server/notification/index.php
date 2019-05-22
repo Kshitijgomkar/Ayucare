@@ -33,7 +33,7 @@
         <a class="nav-link" href="#"><h3>Notificaitons</h3></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><h3>Students</h3></a>
+        <a class="nav-link" href="../student"><h3>Students</h3></a>
       </li>
     </ul>
 </nav>

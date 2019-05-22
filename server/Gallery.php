@@ -7,7 +7,7 @@
             if($conn->query($sql)) echo "true";
         }
         function deleteGallery($id){
-            $sql = "delete from gallery where id = $id";
+            $sql = "delete from gallery where path = $id";
             $conn = Connection::connect();
             if($conn->query($sql)) echo "true";
         }

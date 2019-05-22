@@ -58,11 +58,24 @@
     </tr>
   </thead>
   <tbody>
+    <?php
+        include_once '../Student.php';
+        $obj = new Student;
+        $students = $obj->fetchStudentData();
+        $i = 0;
+        foreach($students as $student){
+    ?>
     <tr class="table-active">
-      <th scope="row">Active</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
+      <th scope="row"><?php echo $i;?></th>
+      <?php 
+        for($i=0;$i<sizeof($student);$i++){ 
+      ?>
+      <td><?php echo $student[$i]; ?></td>
+        <?php } ?>
     </tr>
+        <?php 
+        $i++;
+    }     
+?>
 </body>
 </html>
